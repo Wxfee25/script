@@ -1,83 +1,85 @@
-@echo off
-setlocal
+#!/usr/bin/env bash
+# =====================================
+# Registro Automático en GitHub (versión bash)
+# =====================================
 
-REM =====================================
-REM Registro Automático en GitHub
-REM =====================================
-set REPO_DIR=C:\MiRepo
+# REPO_DIR es la ruta de tu repositorio en Termux
+REPO_DIR="$HOME/MiRepo"
 
-REM Obtener nombre de host
-for /f "tokens=*" %%i in ('hostname') do set MYHOST=%%i
+# Obtener nombre de host
+MYHOST="$(hostname)"
 
-REM Obtener la primera IPv4 (quitando espacios)
-for /f "tokens=2 delims=:" %%i in ('ipconfig ^| findstr /c:"IPv4"') do (
-    set "MYIP=%%i"
-    goto :ipFix
-)
-:ipFix
-for /f "tokens=* delims= " %%i in ("%MYIP%") do set "MYIP=%%i"
+# Obtener la primera IPv4 (excluyendo 127.0.0.1)
+# Hay muchas formas de hacerlo, aquí una simple:
+MYIP="$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d/ -f1 | head -n 1)"
 
-echo Registrando dispositivo: %MYHOST% - %MYIP%
+echo "Registrando dispositivo: $MYHOST - $MYIP"
 
-REM Entrar a la carpeta del repo
-pushd %REPO_DIR%
-if errorlevel 1 (
-    echo No se encontro el directorio del repositorio.
-    goto end
-)
+# Verificar si existe la carpeta del repo y entrar
+if [ ! -d "$REPO_DIR" ]; then
+    echo "No se encontró el directorio del repositorio."
+    exit 1
+fi
 
-REM Agregar la info al archivo dispositivos.txt
-echo %DATE% %TIME% - Host: %MYHOST%, IP: %MYIP% >> dispositivos.txt
+pushd "$REPO_DIR" >/dev/null
 
-REM Hacer commit y push
+# Agregar la info al archivo dispositivos.txt
+echo "$(date) - Host: $MYHOST, IP: $MYIP" >> dispositivos.txt
+
+# Hacer commit y push
 git add dispositivos.txt
-git commit -m "Registro de %MYHOST% - %MYIP% el %DATE%"
+git commit -m "Registro de $MYHOST - $MYIP el $(date)"
 git push
-popd
 
-REM Mensaje de transparencia para el usuario
-echo Tu dispositivo se ha registrado en el sistema.
-timeout /t 3 /nobreak >nul
+popd >/dev/null
 
-REM =====================================
-REM Menú de Operaciones Gen Z
-REM =====================================
-:menu
-cls
-echo =========================================
-echo       Menú de Operaciones Gen Z
-echo =========================================
-echo 1. Abrir Bloc de Notas
-echo 2. Mostrar Dirección IP
-echo 3. Salir
-echo 4. Descargar Nmap
-echo =========================================
-set /p opcion="Elige una opción: "
+# Mensaje de transparencia para el usuario
+echo "Tu dispositivo se ha registrado en el sistema."
+sleep 3  # Equivalente a 'timeout /t 3 /nobreak >nul'
 
-if "%opcion%"=="1" (
-    echo Abriendo Bloc de Notas...
-    start notepad.exe
-    pause
-    goto menu
-) else if "%opcion%"=="2" (
-    echo Mostrando configuración de red...
-    ipconfig
-    pause
-    goto menu
-) else if "%opcion%"=="3" (
-    echo Saliendo...
-    exit
-) else if "%opcion%"=="4" (
-    echo Descargando Nmap...
-    powershell -Command "Invoke-WebRequest -Uri 'https://nmap.org/dist/nmap-7.93-setup.exe' -OutFile '%TEMP%\nmap-setup.exe'"
-    echo Instalando Nmap (modo silencioso)...
-    start /wait "" "%TEMP%\nmap-setup.exe" /S
-    pause
-    goto menu
-) else (
-    echo Opcion invalida, intenta de nuevo.
-    pause
-    goto menu
-)
+# =====================================
+# Menú de Operaciones Gen Z (versión bash)
+# =====================================
+while true
+do
+    clear  # Equivalente a 'cls'
+    echo "========================================="
+    echo "     Menú de Operaciones Gen Z"
+    echo "========================================="
+    echo "1. Abrir Bloc de Notas"
+    echo "2. Mostrar Dirección IP"
+    echo "3. Salir"
+    echo "4. Descargar Nmap"
+    echo "========================================="
+    read -p "Elige una opción: " opcion
 
-:end
+    case "$opcion" in
+        1)
+            echo "Abriendo editor de texto (nano)..."
+            # En Linux/Termux no existe 'notepad.exe'; nano es un editor de texto en terminal
+            nano
+            # Simulamos una pausa
+            read -p "Presiona Enter para continuar..."
+            ;;
+        2)
+            echo "Mostrando configuración de red..."
+            # En Windows es 'ipconfig'; en Linux se usa 'ifconfig' (instala net-tools si no lo tienes)
+            ifconfig
+            read -p "Presiona Enter para continuar..."
+            ;;
+        3)
+            echo "Saliendo..."
+            exit 0
+            ;;
+        4)
+            echo "Instalando Nmap..."
+            # En Windows se descarga un .exe, en Termux se instala desde pkg (o apt)
+            pkg install nmap -y
+            read -p "Presiona Enter para continuar..."
+            ;;
+        *)
+            echo "Opción inválida, intenta de nuevo."
+            read -p "Presiona Enter para continuar..."
+            ;;
+    esac
+done
