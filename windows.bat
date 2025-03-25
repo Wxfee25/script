@@ -33,8 +33,6 @@ git push
 REM Volver a la carpeta original
 popd
 
-@echo off
-color 0A
 echo =========================================
 echo       Menú de Opciones Gen Z
 echo =========================================
