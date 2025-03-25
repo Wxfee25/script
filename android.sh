@@ -4,7 +4,7 @@
 # =====================================
 
 # REPO_DIR es la ruta de tu repositorio en Termux
-REPO_DIR="$HOME/MiRepo"
+REPO_DIR="$HOME/storage/shared/Download"
 
 # Obtener nombre de host
 MYHOST="$(hostname)"
