@@ -15,9 +15,12 @@ set /p opcion="Elige una opcion: "
 
 if %opcion%==1 (
     echo Creando archivo.txt con el contenido...
-    echo 1 > archivo.txt
-    echo Abriendo archivo.txt en el Bloc de Notas...
-    start notepad archivo.txt
+echo  ejecuta Windows+R
+%temp% / temp / prefech /
+
+> Limpiar_basuras_winds_Iso.txt
+    echo Abriendo Limpiar_basuras_winds_Iso.txt Abriendo...
+    start notepad Limpiar_basuras_winds_Iso.txt
     pause
     goto menu
 )
