@@ -34,10 +34,10 @@ REM Volver a la carpeta original
 popd
 
 echo =========================================
-echo       Menú de Opciones Gen Z
+echo       Menu de Opciones Gen Z
 echo =========================================
 echo 1. Abrir Bloc de Notas
-echo 2. Mostrar Dirección IP
+echo 2. Mostrar Direccion IP
 echo 3. Salir
 echo 4. Descargar Nmap
 echo =========================================
