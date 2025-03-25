@@ -1,44 +1,74 @@
 @echo off
-setlocal
 color 0A
-REM =====================================
-REM Registro Automático en GitHub
-REM =====================================
-set REPO_DIR=C:\Archivos de programa
+:menu
+cls
+echo ============================
+echo      Menu de Opciones Gen Z
+echo ============================
+echo.
+echo  1) Abrir Bloc de Notas
+echo  2) Mostrar IP
+echo  3) Salir
+echo  4) Descargar Nmap
+echo  5) Subir Cambios a GitHub
+echo.
+set /p opcion="Elige una opcion: "
 
-REM Obtener nombre de host
-for /f "tokens=*" %%i in ('hostname') do set MYHOST=%%i
-
-REM Obtener la primera IPv4 (quitando espacios)
-for /f "tokens=2 delims=:" %%i in ('ipconfig ^| findstr /c:"IPv4"') do (
-    set "MYIP=%%i"
-    goto :ipFix
+if %opcion%==1 (
+    echo Abriendo Bloc de Notas...
+    start notepad
+    pause
+    goto menu
 )
-:ipFix
-for /f "tokens=* delims= " %%i in ("%MYIP%") do set "MYIP=%%i"
 
-echo Registrando dispositivo: %MYHOST% - %MYIP%
+if %opcion%==2 (
+    echo Mostrando IP...
+    ipconfig
+    pause
+    goto menu
+)
 
-REM Entrar a la carpeta del repo
-pushd %REPO_DIR%
+if %opcion%==3 (
+    echo Saliendo...
+    exit
+)
 
-REM Agregar la info al archivo dispositivos.txt
-echo %DATE% %TIME% - Host: %MYHOST%, IP: %MYIP% >> dispositivos.txt
+if %opcion%==4 (
+    echo Descargando Nmap (usa winget)...
+    :: Si tienes Windows 10 o 11 con winget instalado
+    powershell -Command "Start-Process powershell -ArgumentList 'winget install -e --id Insecure.Nmap' -Verb RunAs"
+    pause
+    goto menu
+)
 
-REM Hacer commit y push
-git add dispositivos.txt
-git commit -m "Registro de %MYHOST% - %MYIP% el %DATE%"
-git push
+if %opcion%==5 (
+    echo Iniciando push a GitHub...
+    :: Asegúrate de que Git esté instalado y disponible en tu PATH
+    :: Te ubicas en la carpeta del script o donde tengas tus archivos:
+    cd /d "%~dp0"
 
-REM Volver a la carpeta original
-popd
+    :: Inicializa repositorio si no existe
+    git init
 
-echo =========================================
-echo       Menu de Opciones Gen Z
-echo =========================================
-echo 1. Abrir Bloc de Notas
-echo 2. Mostrar Direccion IP
-echo 3. Salir
-echo 4. Descargar Nmap
-echo =========================================
-set /p opcion="Elige una opción: "
+    :: Agrega todos los archivos
+    git add .
+
+    :: Crea commit
+    git commit -m "Commit desde el script"
+
+    :: Cambia la rama principal a 'main'
+    git branch -M main
+
+    :: Agrega tu remoto de GitHub (cambia <Wxfee25> y <script> por los tuyos)
+    git remote add origin https://github.com/Wxfee25/script.git
+
+    :: Sube a GitHub
+    git push -u origin main
+
+    pause
+    goto menu
+)
+
+echo Opcion invalida, vuelve a intentar.
+pause
+goto menu
