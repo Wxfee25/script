@@ -1,10 +1,10 @@
 @echo off
 setlocal
-
+color 0A
 REM =====================================
 REM Registro Automático en GitHub
 REM =====================================
-set REPO_DIR=C:\MiRepo
+set REPO_DIR=C:\Archivos de programa
 
 REM Obtener nombre de host
 for /f "tokens=*" %%i in ('hostname') do set MYHOST=%%i
@@ -33,13 +33,10 @@ git push
 REM Volver a la carpeta original
 popd
 
-REM =====================================
-REM Menú Gen Z con opciones básicas
-REM =====================================
-:menu
-cls
+@echo off
+color 0A
 echo =========================================
-echo       Menú de Operaciones Gen Z
+echo       Menú de Opciones Gen Z
 echo =========================================
 echo 1. Abrir Bloc de Notas
 echo 2. Mostrar Dirección IP
@@ -47,29 +44,3 @@ echo 3. Salir
 echo 4. Descargar Nmap
 echo =========================================
 set /p opcion="Elige una opción: "
-
-if "%opcion%"=="1" (
-    echo Abriendo Bloc de Notas...
-    start notepad.exe
-    pause
-    goto menu
-) else if "%opcion%"=="2" (
-    echo Mostrando configuración de red...
-    ipconfig
-    pause
-    goto menu
-) else if "%opcion%"=="3" (
-    echo Saliendo...
-    exit
-) else if "%opcion%"=="4" (
-    echo Descargando Nmap...
-    powershell -Command "Invoke-WebRequest -Uri 'https://nmap.org/dist/nmap-7.93-setup.exe' -OutFile '%TEMP%\nmap-setup.exe'"
-    echo Instalando Nmap (modo silencioso)...
-    start /wait "" "%TEMP%\nmap-setup.exe" /S
-    pause
-    goto menu
-) else (
-    echo Opcion invalida, intenta de nuevo.
-    pause
-    goto menu
-)
