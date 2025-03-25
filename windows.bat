@@ -2,15 +2,15 @@
 color 0A
 :menu
 cls
-echo ============================
-echo      Menu de Opciones Gen Z
-echo ============================
+                                        echo ============================
+                                        echo      Install_Wxfee25
+                                        echo ============================
 echo.
 echo  1) Abrir Bloc de Notas
 echo  2) Mostrar IP
-echo  3) Salir
+echo  3) Subir Cambios a GitHub
 echo  4) Descargar Nmap
-echo  5) Subir Cambios a GitHub
+echo  5) Salir
 echo.
 set /p opcion="Elige una opcion: "
 
@@ -28,7 +28,7 @@ if %opcion%==2 (
     goto menu
 )
 
-if %opcion%==3 (
+if %opcion%==5 (
     echo Saliendo...
     exit
 )
@@ -41,11 +41,11 @@ if %opcion%==4 (
     goto menu
 )
 
-if %opcion%==5 (
+if %opcion%==3 (
     echo Iniciando push a GitHub...
     :: Asegúrate de que Git esté instalado y disponible en tu PATH
     :: Te ubicas en la carpeta del script o donde tengas tus archivos:
-    cd /d "%~dp0"
+    cd C:/Archivos de programa "%~dp0"
 
     :: Inicializa repositorio si no existe
     git init
