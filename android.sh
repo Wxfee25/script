@@ -43,9 +43,15 @@ sleep 3  # Equivalente a 'timeout /t 3 /nobreak >nul'
 while true
 do
     clear  # Equivalente a 'cls'
-    echo "========================================="
-    echo "     Menú de Operaciones Gen Z"
-    echo "========================================="
+echo "===================================="
+echo " __         ____   __   ____  ____   _____  "
+echo " \×\   _   /×/\×\ /×/ _!×_×_) !×_×_) !×_×_) "
+echo "  \×\ /×\ /×/  \×V×/ !_××!__  !×!__  !×!__  "
+echo "   \×V×^×V×/   /××\    !×_×_) !××_×) !××_×) "
+echo "    \×/ \×/   /×/\×\   !×!    !×!__  !×!__  "
+echo "     V   V   /_/  \_\  !_!    !×_×_) !×_×_) "
+    echo "         Install_Wxfee25                "
+    echo "======================================= "
     echo "1. Abrir Bloc de Notas"
     echo "2. Mostrar Dirección IP"
     echo "3. Salir"
