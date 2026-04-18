@@ -1,0 +1,35 @@
+import os
+import socket
+import cv2
+
+# Obtener la dirección IP
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip_address = s.getsockname()[0]
+    s.close()
+    return ip_address
+
+# Acceder a la cámara
+def access_camera():
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    cv2.imshow('Camera', frame)
+    cv2.waitKey(0)
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Acceder al almacenamiento
+def access_storage():
+    storage_path = os.path.expanduser("~")
+    files = os.listdir(storage_path)
+    return files
+
+# Ejecutar las funciones
+ip = get_ip_address()
+print(f"Dirección IP: {ip}")
+
+access_camera()
+
+storage_files = access_storage()
+print(f"Archivos en el almacenamiento: {storage_files}")
